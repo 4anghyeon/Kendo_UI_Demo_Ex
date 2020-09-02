@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.917/styles/kendo.default-v2.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/kendo.all.min.js"></script>
+    
+    
+
+</head>
+<body>
+<div id="example">
+
+    <div id="window">
+        <div style="text-align: center;">
+            <img src="img/test.jpg" style="width: 450px;" alt="ARNE JACOBSEN EGG CHAIR" />
+        </div>
+    </div>
+
+    <div class="box hidden-on-narrow" style="float:right">
+        <div class="box-col">
+            <h4>Animation Settings</h4>
+            <ul class="options">
+                <li>
+                    <input id="default" name="animation" type="radio" checked="checked" /> <label for="default">default/zoom animation</label>
+                </li>
+                <li>
+                    <input id="toggle" name="animation" type="radio" /> <label for="toggle">toggle animation</label>
+                </li>
+                <li>
+                    <input id="expand" name="animation" type="radio" checked="checked" /> <label for="expand">expand animation</label>
+                </li>
+                <li>
+                    <input id="opacity" type="checkbox" checked="checked" /> <label for="opacity">animate opacity</label>
+                </li>
+            </ul>
+        </div>
+        <div class="box-col">
+            <h4>Window Settings</h4>
+            <ul class="options">
+                <li>
+                    <input id="draggable" type="checkbox" checked="checked" /> <label for="draggable">draggable</label>
+                </li>
+                <li>
+                    <input id="resizable" type="checkbox" checked="checked" /> <label for="resizable">resizable</label>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <span id="undo" style="display:none" class="k-button hidden-on-narrow">Click here to open the window.</span>
+
+    <div class="responsive-message"></div>
+
+    <script>
+        function onClose() {        // X버튼 눌렀을 때
+            $("#undo").fadeIn();
+        }
+
+        $(document).ready(function () {
+            var original = $("#window").clone(true);        // original window div를 복제 해놓음
+
+            $(".box input").change(function () {            //combobox값이 바뀌면
+                var clone = original.clone(true);           // original 복제
+
+                $("#undo").hide();
+                $("#window").data("kendoWindow").destroy();         // combobox 값이 변경 될 때 메모리 누수를 피하기 위해 window div에 걸려있던 모든 이벤트 핸들러 제거
+
+                setTimeout(function () {
+                    $("#example").append(clone);        // 복제한 window 다시 붙여넣기
+                    initWindow();       // 설정 초기화
+                }, 200);
+            });
+
+            var getEffects = function () {
+                return (($("#expand")[0].checked ? "expand:vertical " : "") +
+                    ($("#opacity")[0].checked ? "fadeIn" : "")) || false;
+            };
+
+            function initWindow() {
+                var isDraggable = $("#draggable")[0].checked;       // draggable 체크
+                var isResizable = $("#resizable")[0].checked;       // resizable 체크
+
+                var windowOptions = {
+                    actions: ["Custom", "Minimize", "Maximize", "Close"],       // 윈도우 상단창에 어떤 버튼을 생성할지 여부
+                    draggable: isDraggable,
+                    resizable: isResizable,
+                    width: "500px",
+                    title: "나무",
+                    visible: false,
+                    close: onClose      // X 버튼 눌렀을 때 상단에 정의 한 onClose 함수 실행
+                };
+
+                if (!$("#default")[0].checked)      // 애니메이션이 default가 아니면
+                    windowOptions.animation = { open: { effects: getEffects() }, close: { effects: getEffects(), reverse: true }        // getEffects 함수를 이용해 어떤 애니메이션 사용할지 가져옴
+                };
+
+                $("#window").kendoWindow(windowOptions);        // 설정한 옵션으로 window div에 kendowindow 적용
+
+                $("#undo")      // 윈도우 닫았다가 다시 열 때
+                    .bind("click", function () {
+                        $("#window").data("kendoWindow").open();
+                        $("#undo").fadeOut(300);
+                    });
+
+                $("#window").data("kendoWindow").open();
+            }
+
+            initWindow();
+
+            $("#window").data("kendoWindow").wrapper
+                .find(".k-i-custom").parent().click(function (e) {
+                    alert("Custom action button clicked");
+                    e.preventDefault();
+                });
+        });
+    </script>
+
+    <style>
+        #example {
+            min-height: 400px;
+        }
+
+        #undo {
+            text-align: center;
+            position: absolute;
+            white-space: nowrap;
+            padding: 1em;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 1023px) {
+            div.k-window {
+                display: none !important;
+            }
+        }
+    </style>
+
+</div>
+
+
+</body>
+</html>

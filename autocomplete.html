@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.917/styles/kendo.default-v2.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/kendo.all.min.js"></script>
+    
+    <script src="jquery.ajax-cross-origin.min.js"></script>
+
+</head>
+<body>
+    
+        <div id="example">
+            <div class="demo-section k-content">
+                <h4><label for="countries">Choose shipping countries:</label></h4>
+                <input id="countries" style="width: 100%;" />
+                <div class="demo-hint">Start typing the name of an European country</div>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    
+                    var dataSource;
+                    var data = [];
+
+                    function getdata(){
+
+                        data = [];
+
+                        $.ajax({
+                        crossOrigin : true,
+                        contentType: 'application/json',
+                        url: "https://mac.search.naver.com/m/ac?_callback=result&q_enc=UTF-8&st=1&frm=mobile_nv&r_format=json&r_enc=UTF-8&r_unicode=0&t_koreng=1&q="+$("#countries").val(),
+                        type: "Get",
+                        crossDomain: true,
+                        success: function (result) {
+                            result = result.substr(7);
+                            result = result.slice(0,-1);
+                            dataSource = JSON.parse(result);
+                            dataSource = dataSource.items[0];
+
+                            for(let i = 0; i<dataSource.length ; i++){
+                                data.push(dataSource[i][0]);
+                            }
+
+                            console.log(data)
+                        }
+                    });
+                    }
+
+                    $("#countries").on("change keyup paste", function() {
+                        getdata();
+                    });
+
+
+                    //create AutoComplete UI component
+                    $("#countries").kendoAutoComplete({
+                        dataSource: data,
+                        filter: "startswith",
+                        placeholder: "Select country...",
+                        separator: ", "
+                    });
+                });
+            </script>
+        </div>
+
+
+    
+
+</body>
+</html>

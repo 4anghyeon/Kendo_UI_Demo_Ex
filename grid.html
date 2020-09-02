@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.917/styles/kendo.default-v2.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/kendo.all.min.js"></script>
+
+
+    <script src="jquery.ajax-cross-origin.min.js"></script>
+
+</head>
+
+<body>
+    <div id="example">
+        <div id="grid"></div>
+        <script>
+            $(document).ready(function () {
+                $("#grid").kendoGrid({      // id가 grid인 div에 kendoGrid를 적용한다.
+                    dataSource: {
+                        type: "odata",      // 받아오는 데이터 타입
+                        transport: {
+                            read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"      //주소
+                        },
+                        pageSize: 10        // 페이지 사이즈 (기본값이 없으므로 반드시 설정해줘야함 (설정 안하면 전체불러옴))
+                    },
+                    height: 550,
+                    groupable: true,
+                    sortable: false,
+                    pageable: {     // false일경우 페이징을 하지 않음
+                        refresh: true,      // 리프레시 버튼 보임
+                        pageSizes: true,        // true일경우 몇개의 페이지를 표시할지 나타내는 드롭다운 표시
+                        buttonCount: 1
+                    },
+                    columns: [{
+                        template: "<div class='customer-photo'" +       // 해당 td 안에 들어갈 html 정의
+                        "style='background-image: url(../content/web/Customers/#:data.CustomerID#.jpg);'></div>" +
+                        "<div class='customer-name'>#: ContactName #</div>",
+                        field: "ContactName",
+                        title: "Contact Name",
+                        width: 240
+                    }, {
+                        field: "ContactTitle",
+                        title: "Contact Title"
+                    }, {
+                        field: "CompanyName",
+                        title: "Company Name"
+                    }, {
+                        field: "Country",
+                        width: 150
+                    }]
+                });
+            });
+        </script>
+    </div>
+    
+    <style type="text/css">
+        .customer-photo {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-size: 32px 35px;
+            background-position: center center;
+            vertical-align: middle;
+            line-height: 32px;
+            box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+            margin-left: 5px;
+        }
+    
+        .customer-name {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 32px;
+            padding-left: 3px;
+        }
+    </style>
+
+
+</body>
+
+</html>
