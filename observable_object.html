@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.917/styles/kendo.default-v2.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/kendo.all.min.js"></script>
+</head>
+
+<body>
+    <span data-bind="text: fullName"></span>
+
+    <p>Full Name: <input data-bind="value: fullName2"></p>
+    <p>First Name: <span data-bind="text: firstName2"></span></p>
+    <p>Last Name: <span data-bind="text: lastName2"></span></p>
+</body>
+
+<script>
+    var viewModel = kendo.observable({
+        name: "John Doe"
+    });
+
+    var name = viewModel.get("name"); // .get("속성명") 을 통해서 값을 가져올 수 있다.
+    alert(name); // shows "John Doe"
+
+
+
+    var viewModel2 = kendo.observable({
+        person: {
+            name: "John Doe"
+        }
+    });
+
+    viewModel2.set("person.name", "Jane Doe222"); // .set("속성명","값") 을 통해서 viewmodel을 변경 할 수 있다.
+
+    var personName = viewModel2.get("person.name");
+    alert(personName); // shows "Jane Doe"
+
+    var viewModel3 = kendo.observable({
+        firstName: "sanghyeon",
+        lastName: "lee",
+        fullName: function () { // 속성에 함수를 집어 넣을 수 있다.
+            return this.get("firstName") + " " + this.get("lastName");
+        }
+    });
+
+    var vm = kendo.observable({
+        firstName2: "John",
+        lastName2: "Doe",
+        fullName2: function (value) {
+            if (value !== undefined) {
+                var name = value.split(" ");
+
+                this.set("firstName2", name[0]);
+                this.set("lastName2", name[1]);
+            } else {
+                return this.get("firstName2") + " " + this.get("lastName2");
+            }
+        }
+    });
+
+    kendo.bind(document.body, vm);
+
+    //kendo.bind($("span"), viewModel3);
+</script>
+
+</html>

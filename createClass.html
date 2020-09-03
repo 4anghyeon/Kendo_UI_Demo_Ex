@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.917/styles/kendo.default-v2.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/kendo.all.min.js"></script>
+</head>
+
+<body>
+    <div id="content"></div>
+</body>
+
+<script>
+    function log(msg) {
+        $("#content").append("<p>" + msg + "</p>");
+    }
+
+    // Create a new person class.
+    var Person = kendo.Class.extend({       // Person class 생성
+        firstName: 'Not Set',
+        lastName: 'Not Set',
+        isPrettyCoolPerson: false,
+        init: function (firstName, lastName) {      // 생성자 함수 지정
+            if (firstName) this.firstName = firstName;
+            if (lastName) this.lastName = lastName;
+        },
+        sayHello: function () {
+            log("Hello! I'm " + this.firstName + " " + this.lastName)
+        }
+    });
+
+    // Create a new John Bristowe of type person.
+    var person = new Person("John", "Bristowe");        // 생성자
+    // Say hello John
+    person.sayHello();
+
+    // Create a parent object of type person.
+    var Parent = Person.extend({        // Parent class가 Person class 상속받음
+        firstName: 'Mark',
+        lastName: 'Holland'
+    });
+
+    // Create the parent.
+    var myDad = new Parent();
+    myDad.isPrettyCoolPerson = true;
+
+    // Say hello, parent.
+    myDad.sayHello();
+    // Expose the parent's coolness factor.
+    log("Cool? " + myDad.isPrettyCoolPerson);
+
+    // Create a new child object that inherits from the parent.
+    var Child = Parent.extend({});      // Child class가 Parent class 상속받음
+
+    // Create me.
+    var me = new Child();
+    me.firstName = "Burke";     // lastName은 부모의 lastName을 따름
+
+    // Hello!
+    me.sayHello();
+    // Expose my coolness.
+    log("Cool? " + me.isPrettyCoolPerson);
+</script>
+
+</html>

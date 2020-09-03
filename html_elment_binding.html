@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.917/styles/kendo.default-v2.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/kendo.all.min.js"></script>
+</head>
+
+<body>
+    <div class="demo-section k-content wide">
+        <div>
+            <ul class="fieldlist">
+                <li>
+                    <h4>Text</h4> <input type="text" data-bind="value: textValue" class="k-textbox" />
+                </li>
+                <li>
+                    <h4>Text with update on keyup event</h4> <input type="text" data-value-update="keyup"
+                        data-bind="value: textValue" class="k-textbox" />
+                </li>
+                <li>
+                    <h4>Textarea</h4> <textarea data-bind="value: textareaValue" class="k-textbox"
+                        style="height: 40px; width: 140px;"></textarea>
+                </li>
+                <li>
+                    <h4>Checkbox</h4>
+                    <label>
+                        <input type="checkbox" data-bind="checked: checkboxValue" />Check
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <ul class="fieldlist">
+                <li>
+                    <h4>Radio</h4>
+                    <label>
+                        <input type="radio" name="fruit" value="Apple" data-bind="checked: radioValue" />Apple
+                    </label>
+                    <label>
+                        <input type="radio" name="fruit" value="Banana" data-bind="checked: radioValue" />Banana
+                    </label>
+                    <label>
+                        <input type="radio" name="fruit" value="Orange" data-bind="checked: radioValue" />Orange
+                    </label>
+                </li>
+                <li>
+                    <h4>Checkbox list</h4>
+                    <label>
+                        <input type="checkbox" value="Apple" data-bind="checked: checkboxListValue" />Apple
+                    </label>
+                    <label>
+                        <input type="checkbox" value="Banana" data-bind="checked: checkboxListValue" />Banana
+                    </label>
+                    <label>
+                        <input type="checkbox" value="Orange" data-bind="checked: checkboxListValue" />Orange
+                    </label>
+                </li>
+                <li>
+                    <h4>Select</h4> <select data-bind="source: fruits, value: selectValue"
+                        style="width: 147px;"></select>
+                </li>
+                <li>
+                    <h4>Multiple select</h4> <select multiple data-bind="source: fruits, value: multipleSelectValue"
+                        style="width: 147px;"></select>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h4>Current view model state</h4>
+            <pre>
+            {
+                textValue: <span data-bind="text: textValue"></span>,
+                textareaValue: <span data-bind="text: textareaValue"></span>,
+                checkboxValue: <span data-bind="text: checkboxValue"></span>,
+                radioValue: <span data-bind="text: radioValue"></span>,
+                checkBoxListValue: [<span data-bind="text: displayCheckBoxListValue"></span>],
+                selectValue: <span data-bind="text: selectValue"></span>,
+                multipleSelectValue: [<span data-bind="text: displayMultipleSelectValue"></span>]
+            }
+            </pre>
+        </div>
+    </div>
+</body>
+
+<script>
+    var viewModel = kendo.observable({
+        textValue: "Text value",
+        textareaValue: "Textarea value",
+        checkboxValue: false,
+        radioValue: "Apple",
+        checkboxListValue: ["Apple"],
+        multipleSelectValue: ["Apple"],
+        fruits: ["Apple", "Banana", "Orange"],
+        selectValue: "Apple",
+        displayCheckBoxListValue: function () {
+            return this.get("checkboxListValue").join(", ");
+        },
+        displayMultipleSelectValue: function () {
+            return this.get("multipleSelectValue").join(", ");
+        }
+    });
+
+    kendo.bind($("div.demo-section"), viewModel);
+</script>
+
+</html>

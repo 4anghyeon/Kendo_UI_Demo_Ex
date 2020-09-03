@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.917/styles/kendo.default-v2.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2019.3.917/js/kendo.all.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div id="view" class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" data-bind="text: name">Modal Header</h4>        <!-- 여기다가 제목 넣고 -->
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                    <div >
+                        <input data-bind="value: name" />
+                        <button data-bind="click: displayGreeting">Display Greeting</button>
+                        <div data-bind="text: person.lowerCaseName"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+<script>
+    var viewModel = kendo.observable({ // observable --> View에 변화의 감지를 알림!
+        //viewModel 안에는 여러 객체가 들어갈 수 있다!
+        name: "John Doe",
+        displayGreeting: function () {      // 여기다가 AJAX 호출하고
+            var name = this.get("name");
+            alert("Hello, " + name + "!!!");
+        },
+        person: {
+            name: "John Doe2",
+            lowerCaseName: function () {
+                return this.get("name").toLowerCase();
+            }
+        }
+    });
+
+    kendo.bind($("#view"), viewModel); // view div안에 viewModel이라는 이벤트?모델?을 binding 함
+</script>
+
+</html>
